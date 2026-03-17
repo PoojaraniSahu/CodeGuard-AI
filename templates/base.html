@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeGuard AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="brand">CodeGuard AI 🛡️</a>
+            {% if user %}
+                <div class="nav-links">
+                    <span>Welcome, <strong>{{ user.username }}</strong></span>
+                    <a href="/logout" class="btn btn-outline" style="margin-left: 1rem;">Logout</a>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container base-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

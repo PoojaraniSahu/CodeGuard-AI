@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <a href="/dashboard" class="text-muted" style="text-decoration: none; margin-bottom: 0.5rem; display: inline-block;">
+            &larr; Back to Dashboard
+        </a>
+        <h2 style="margin-top: 0;">{{ repo.repo_name }}</h2>
+        <span class="badge badge-success">Webhook Active</span>
+        <button class="btn btn-primary" style="margin-left: 1rem;" onclick="triggerFullScan({{ repo.id }}, {{ user.id }})">
+            ✨ Run Full Repository Scan
+        </button>
+    </div>
+    
+    <div style="text-align: right;">
+        <p class="text-muted" style="margin: 0;">Webhook ID: {{ repo.webhook_id }}</p>
+    </div>
+</div>
+
+<div class="dashboard-section">
+    <h3>AI Code Review History</h3>
+    <p class="text-muted">Below are the automated code reviews generated from your recent Pull Requests and Commits.</p>
+
+    {% if reviews %}
+        <div class="review-list">
+            {% for review in reviews %}
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
+                        <h4 style="margin: 0;">
+                            {% if review.pr_id == 0 %}
+                                Full Repository Scan
+                            {% else %}
+                                Pull Request #{{ review.pr_id }}
+                            {% endif %}
+                        </h4>
+                        <span class="text-muted">{{ review.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                    </div>
+                    
+                    {% if review.issues %}
+                        <div class="issues-list">
+                            {% for issue in review.issues %}
+                                <div class="issue-item severity-{{ issue.severity }}" style="padding: 1rem; background: #f8fafc; border-left: 4px solid var(--primary-color); border-radius: 4px; margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span style="font-weight: 600;">
+                                            {% if issue.issue_type == 'bug' %}🐞 Bug
+                                            {% elif issue.issue_type == 'security' %}🔐 Security
+                                            {% else %}🎨 Style
+                                            {% endif %}
+                                        </span>
+                                        <span class="badge 
+                                            {% if issue.severity == 'high' %}badge-danger
+                                            {% elif issue.severity == 'medium' %}badge-warning
+                                            {% else %}badge-info{% endif %}">
+                                            {{ issue.severity | upper }}
+                                        </span>
+                                    </div>
+                                    <p style="margin: 0.5rem 0;">{{ issue.message }}</p>
+                                    {% if issue.file_path %}
+                                        <code style="font-size: 0.875rem; background: #e2e8f0; padding: 0.2rem 0.4rem; border-radius: 4px; color: #334155;">{{ issue.file_path }}</code>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div style="text-align: center; padding: 2rem 0;">
+                            <span style="font-size: 2rem;">✨</span>
+                            <p class="text-muted" style="margin-top: 0.5rem;">No issues found. Perfect code!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card" style="text-align: center; padding: 3rem 1rem;">
+            <p class="text-muted">No reviews generated yet. Open a Pull Request on GitHub to trigger the AI analysis.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
