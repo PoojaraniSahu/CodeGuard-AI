@@ -8,3 +8,4 @@ google-generativeai
 pydantic[email]
 alembic
 jinja2
+psycopg2-binary
