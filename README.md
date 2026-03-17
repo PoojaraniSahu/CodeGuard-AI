@@ -3,7 +3,7 @@
 **CodeGuard AI** is a professional, AI-powered code analysis platform that automates the code review process. It integrates directly with GitHub to provide real-time feedback on your code quality, security vulnerabilities, and logic bugs using Google's advanced Gemini models.
 
 ## 🚀 Live Demo
-Check it out on Vercel: [https://codeguard-ai.vercel.app](https://codeguard-ai.vercel.app)
+Check it out on Vercel: [[https://codeguard-ai.vercel.app](https://code-guard-ai-blush.vercel.app/)]
 
 *(Note: Replace the link above with your actual Vercel deployment URL)*
 
